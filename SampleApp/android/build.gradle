@@ -3,7 +3,7 @@
 buildscript {
     ext {
         buildToolsVersion = "29.0.3"
-        minSdkVersion = 21
+        minSdkVersion = 23
         compileSdkVersion = 30
         targetSdkVersion = 30
     }
@@ -34,5 +34,9 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://www.jitpack.io' }
+    }
+
+    project.ext {
+        smartCredentialsVersion = "6.2.6"
     }
 }

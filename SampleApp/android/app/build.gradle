@@ -188,6 +188,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }
@@ -207,6 +208,12 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    implementation("de.telekom.smartcredentials:core:${smartCredentialsVersion}")
+    implementation("de.telekom.smartcredentials:security:${smartCredentialsVersion}")
+    implementation("de.telekom.smartcredentials:storage:${smartCredentialsVersion}")
+    implementation("de.telekom.smartcredentials:authentication:${smartCredentialsVersion}")
+
 }
 
 // Run this once to be able to run the application with BUCK

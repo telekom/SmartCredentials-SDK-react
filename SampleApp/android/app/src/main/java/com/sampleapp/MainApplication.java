@@ -18,6 +18,16 @@ import org.unimodules.adapters.react.ModuleRegistryAdapter;
 import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 import org.unimodules.core.interfaces.Package;
 import org.unimodules.core.interfaces.SingletonModule;
+
+import de.telekom.smartcredentials.authentication.factory.SmartCredentialsAuthenticationFactory;
+import de.telekom.smartcredentials.core.api.CoreApi;
+import de.telekom.smartcredentials.core.api.SecurityApi;
+import de.telekom.smartcredentials.core.api.StorageApi;
+import de.telekom.smartcredentials.core.configurations.SmartCredentialsConfiguration;
+import de.telekom.smartcredentials.core.factory.SmartCredentialsCoreFactory;
+import de.telekom.smartcredentials.core.rootdetector.RootDetectionOption;
+import de.telekom.smartcredentials.security.factory.SmartCredentialsSecurityFactory;
+import de.telekom.smartcredentials.storage.factory.SmartCredentialsStorageFactory;
 import expo.modules.updates.UpdatesController;
 
 import com.facebook.react.bridge.JSIModulePackage;
@@ -43,6 +53,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
+      packages.add(new MyAppPackage());
       return packages;
     }
 
@@ -90,6 +101,17 @@ public class MainApplication extends Application implements ReactApplication {
     }
 
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+
+    SmartCredentialsConfiguration configuration = new SmartCredentialsConfiguration.Builder(this, "1234")
+            .setRootCheckerEnabled(RootDetectionOption.ALL)
+            .setAppAlias("scauthenticationdemo")
+            .build();
+    SmartCredentialsCoreFactory.initialize(configuration);
+    CoreApi coreApi = SmartCredentialsCoreFactory.getSmartCredentialsCoreApi();
+    SecurityApi securityApi = SmartCredentialsSecurityFactory.initSmartCredentialsSecurityModule(this, coreApi);
+    StorageApi storageApi = SmartCredentialsStorageFactory.initSmartCredentialsStorageModule(this, coreApi, securityApi);
+    SmartCredentialsAuthenticationFactory.initSmartCredentialsAuthenticationModule(coreApi, storageApi);
+
   }
 
   /**
